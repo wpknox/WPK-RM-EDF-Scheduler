@@ -62,3 +62,17 @@ They would see the following two graphs:
 ![EDF Schedule](https://github.com/wpknox/WPK-RM-EDF-Scheduler/blob/master/example_edf.png)
 
 As you can see, the schedules are slightly different, but this task set can be scheduled by both algorithms.
+
+---
+### Python Version
+\>= 3.9.0
+
+This is required to correctly run this program because I use `math.lcm`, which is new to 3.9.0. If you use an earlier version of Python, the program will fail to run.
+
+### How to Run
+
+```
+python schedule.py
+```
+
+If you are on Windows and do not have Python in your PATH, you will need to specify the exact location on your computer where your Python installation is to run the program.
