@@ -272,7 +272,7 @@ def make_edf(edf_task_list, lcm):
 if __name__ == '__main__':
   task_cnt = get_user_input("Enter the number of tasks to schedule: ")
   task_list = create_tasks(task_cnt)
-  c_over_p = c_over_p = calc_cp(task_list)
+  c_over_p = calc_cp(task_list)
   period_lcm = find_lcm(task_list)
   if rms_utilization_check(c_over_p, task_cnt) or (c_over_p <= 1 and rms_exact_analysis(task_list)):
     print("schedule both")
