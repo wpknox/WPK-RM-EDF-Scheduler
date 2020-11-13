@@ -1,6 +1,9 @@
 # WPK-RM-EDF-Scheduler
 Creates RM and EDF schedules for a user given task set if possible.
 
+**Author** Willis Knox
+
+Used [this similar project](https://github.com/diegoperini/py-common-scheduling-algorithms) as a reference when initally starting to make sure I was keeping things 'pythonic'
 ### RMS Utilization Check
 First runs the basic RMS scheduablility check (utilization check) to see if the task set passes a sufficient, but not necessary test for RM scheduling. 
 The basic RM utilization check is determined by the following equation:
@@ -54,7 +57,8 @@ For example, if a user entered the following tasks:
 
 They would see the following two graphs:
 
-// RM Graph here
+![RM Schedule](https://github.com/wpknox/WPK-RM-EDF-Scheduler/blob/master/example_rm.png)
 
-// EDF Graph here
+![EDF Schedule](https://github.com/wpknox/WPK-RM-EDF-Scheduler/blob/master/example_edf.png)
 
+As you can see, the schedules are slightly different, but this task set can be scheduled by both algorithms.
