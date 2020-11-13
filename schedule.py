@@ -138,7 +138,7 @@ def rms_exact_analysis(tasks) -> bool:
     curr_tasks = rms[:i+1] # get list of tasks for exact analysis for current task
     for t in curr_tasks:
       old_t += t.wcet # find t_0
-    while old_t <= rms[i].period: # might change this to while True later...
+    while old_t <= rms[i].period:
       new_t = 0
       for j in range(len(curr_tasks)): 
         new_t += curr_tasks[j].wcet * math.ceil(old_t/curr_tasks[j].period) # calc t_1, t_2, ..., t_n depending on cycle
