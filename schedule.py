@@ -256,7 +256,7 @@ def make_edf(edf_task_list, lcm):
     for ti in task_insts:
       if ti.start <= i:
         possible_ti.append(ti)
-    possible_ti.sort(key=lambda x: (priority_cmp, x.start))
+    possible_ti.sort(key=lambda x: (x.priority, x.start))
     if len(possible_ti) > 0:
       print(possible_ti)
       curr_ti = possible_ti[0]
@@ -264,6 +264,10 @@ def make_edf(edf_task_list, lcm):
       print("Before:", curr_ti, "start sec: ", i)
       if curr_ti.execute(CLOCK_CYCLE):
         task_insts.remove(curr_ti)
+        for ti in task_insts:
+          if ti.task.name == curr_ti.task.name and ti.end == curr_ti.end * 2:
+            ti.start = i + 1
+            break
       print("After:", curr_ti, "end sec: ", i + 1)
       print("================================================================================================================")
   title = "EDF Schedule"
