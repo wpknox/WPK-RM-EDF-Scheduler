@@ -265,7 +265,7 @@ def make_edf(edf_task_list, lcm):
       if curr_ti.execute(CLOCK_CYCLE):
         task_insts.remove(curr_ti)
         for ti in task_insts:
-          if ti.task.name == curr_ti.task.name and ti.end == curr_ti.end * 2:
+          if ti.task.name == curr_ti.task.name and ti.end == curr_ti.end + curr_ti.task.period:
             ti.start = i + 1
             break
       print("After:", curr_ti, "end sec: ", i + 1)
