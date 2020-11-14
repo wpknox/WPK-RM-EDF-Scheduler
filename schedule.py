@@ -216,7 +216,7 @@ def make_rms(rms_task_list, lcm):
     num_inst = lcm // task.period
     for j in range(0, num_inst):
       task_insts.append(TaskInstance(task, task.period, j * task.period, (j + 1) * task.period))
-  for i in range(0, lcm):
+  for i in range(0, lcm, CLOCK_CYCLE):
     possible_ti = []
     for ti in task_insts:
       if ti.start <= i:
@@ -239,7 +239,7 @@ def make_edf(edf_task_list, lcm):
   with the EDF algorithm
 
   Args:
-      rms_task_list (List[Task]): Task set to schedule
+      edf_task_list (List[Task]): Task set to schedule
   """
   edf_tasks = copy.deepcopy(edf_task_list)
   edf_tasks.sort(key=task_period)
@@ -251,7 +251,7 @@ def make_edf(edf_task_list, lcm):
     num_inst = lcm // task.period
     for j in range(0, num_inst):
       task_insts.append(TaskInstance(task, (j * task.period) + task.period, j * task.period, (j + 1) * task.period))
-  for i in range(0, lcm):
+  for i in range(0, lcm, CLOCK_CYCLE):
     possible_ti = []
     for ti in task_insts:
       if ti.start <= i:
