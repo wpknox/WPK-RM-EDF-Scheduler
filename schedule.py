@@ -256,7 +256,7 @@ def make_edf(edf_task_list, lcm):
     for ti in task_insts:
       if ti.start <= i:
         possible_ti.append(ti)
-    possible_ti.sort(key=lambda x: (x.priority, x.start))
+    possible_ti.sort(key=priority_cmp)
     if len(possible_ti) > 0:
       print(possible_ti)
       curr_ti = possible_ti[0]
