@@ -4,7 +4,7 @@ Creates RM and EDF schedules for a user given task set if possible.
 **Author** Willis Knox
 
 Used [this similar project](https://github.com/diegoperini/py-common-scheduling-algorithms) as a reference when initally starting to make sure I was keeping things 'pythonic'
-### RMS Utilization Check
+### RMS Utilization Check and EDF Scheduability Check
 First runs the basic RMS scheduablility check (utilization check) to see if the task set passes a sufficient, but not necessary test for RM scheduling. 
 The basic RM utilization check is determined by the following equation:
 
@@ -21,7 +21,7 @@ and
 
 ---
 
-### RMS Exact Analysis (and EDF)
+### RMS Exact Analysis
 If a task set fails the RMS utilization check, it may still be schedulable by RM or EDF. Before testing the exact analysis,
 the program directly tests the **EDF scheduability check** mentioned above. If the task set passes, then it can be *at least* scheduled by EDF.
 
@@ -41,6 +41,7 @@ If a *t* is greater than the largest *p* for a task, the task fails this test. W
 <img src="https://latex.codecogs.com/gif.latex?\frac{t}{p}&space;>&space;1" title="\frac{t}{p} > 1" />
 
 ---
+
 ### Displaying Information
 After running the above test, the program will `print` scheduling information to the user. If the task set cannot be scheduled, it will print a message tell the user that it 
 is not scheduable.
@@ -64,6 +65,7 @@ They would see the following two graphs:
 As you can see, the schedules are slightly different, but this task set can be scheduled by both algorithms.
 
 ---
+
 ### Python Version
 \>= 3.9.0
 
