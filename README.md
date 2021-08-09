@@ -1,11 +1,14 @@
 # WPK-RM-EDF-Scheduler
+
 Creates RM and EDF schedules for a user given task set if possible.
 
 **Author** Willis Knox
 
 Used [this similar project](https://github.com/diegoperini/py-common-scheduling-algorithms) as a reference when initally starting to make sure I was keeping things 'pythonic'
-### RMS Utilization Check and EDF Scheduability Check
-First runs the basic RMS scheduablility check (utilization check) to see if the task set passes a sufficient, but not necessary test for RM scheduling. 
+
+## RMS Utilization Check and EDF Scheduability Check
+
+First runs the basic RMS scheduablility check (utilization check) to see if the task set passes a sufficient, but not necessary test for RM scheduling.
 The basic RM utilization check is determined by the following equation:
 
 <img src="https://latex.codecogs.com/gif.latex?\sum\frac{c_i}{p_i}&space;\leq&space;n(2^{\frac{1}{n}}&space;-&space;1)" title="\sum\frac{c_i}{p_i} \leq n(2^{\frac{1}{n}} - 1)" />
@@ -21,7 +24,8 @@ and
 
 ---
 
-### RMS Exact Analysis
+## RMS Exact Analysis
+
 If a task set fails the RMS utilization check, it may still be schedulable by RM or EDF. Before testing the exact analysis,
 the program directly tests the **EDF scheduability check** mentioned above. If the task set passes, then it can be *at least* scheduled by EDF.
 
@@ -42,38 +46,41 @@ If a *t* is greater than the largest *p* for a task, the task fails this test. W
 
 ---
 
-### Displaying Information
-After running the above test, the program will `print` scheduling information to the user. If the task set cannot be scheduled, it will print a message tell the user that it 
+## Displaying Information
+
+After running the above test, the program will `print` scheduling information to the user. If the task set cannot be scheduled, it will print a message tell the user that it
 is not scheduable.
 
 If the task set *can* be scheduable by one or both of the algorithms, the program will then go on to create the schedule for the user given tasks. This is done by creating
-`TaskInstance` objects that represent each instance of each task for a schedule. 
+`TaskInstance` objects that represent each instance of each task for a schedule.
 
-The created schedules will be printed out to the user in a basic format in the terminal, but more importantly, actual `matplotlib` graphs will be created showing the 
+The created schedules will be printed out to the user in a basic format in the terminal, but more importantly, actual `matplotlib` graphs will be created showing the
 created schedules. Displaying these graphs to the user helps them visualize how the tasks would be scheduled by the algorithms.
 
 For example, if a user entered the following tasks:
+
 - Task 1: (c = 1, p = 3)
 - Task 2: (c = 4, p = 6)
 
 They would see the following two graphs:
 
-![RM Schedule](https://github.com/wpknox/WPK-RM-EDF-Scheduler/blob/master/example_rm.png)
+![RM Schedule](/images/example_rm.png)
 
-![EDF Schedule](https://github.com/wpknox/WPK-RM-EDF-Scheduler/blob/master/example_edf.png)
+![EDF Schedule](/images/example_edf.png)
 
 As you can see, the schedules are slightly different, but this task set can be scheduled by both algorithms.
 
 ---
 
-### Python Version
+## Python Version
+
 \>= 3.9.0
 
 This is required to correctly run this program because I use `math.lcm`, which is new to 3.9.0. If you use an earlier version of Python, the program will fail to run.
 
-### How to Run
+## How to Run
 
-```
+```python
 python schedule.py
 ```
 
