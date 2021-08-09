@@ -19,7 +19,7 @@ class Task(object):
   def __repr__(self) -> str:
     return str(self.__class__) + ": " + str(self.__dict__)
   
-  def update_edf_period(self, curr_iter):
+  def update_edf_period(self, curr_iter) -> None:
     self.period += self.period / curr_iter
 
 class TaskInstance(object):
@@ -41,11 +41,11 @@ class TaskInstance(object):
     return str(self.task.name) + "#" + str(self.id) + ": Remaining execution time: " + str(self.task.wcet - self.usage) + \
           " Start Time: " + str(self.start) +" Deadline: " + str(self.end) + " Priority: " + str(self.priority)
   
-  def get_name(self):
+  def get_name(self) -> str:
     return str(self.task.name) + "#" + str(self.id)
 
 
-def get_user_input(text):
+def get_user_input(text) -> int:
   """Function to prompt the user with a given text string and ask them to input an integer used to in the making of tasks
 
   Args:
@@ -74,18 +74,13 @@ def task_period(e):
   return e.period
 
 def calc_cp(task_list) -> int:
-  cp = 0
-  for task in task_list:
-    cp += task.wcet / task.period
-  return cp
+  cp_list = [task.wcet / task.period for task in task_list]
+  return sum(cp_list)
 
-def find_lcm(tasks):
-  periods = []
-  for task in tasks:
-    periods.append(task.period)
-  return math.lcm(*periods)
+def find_lcm(tasks) -> int:
+  return math.lcm(*[task.period for task in tasks])
 
-def create_tasks(num_tasks):
+def create_tasks(num_tasks) -> list(Task):
   """Creates all tasks depending on what the user enters.
 
   Args:
@@ -133,29 +128,28 @@ def rms_exact_analysis(tasks) -> bool:
   rms = copy.deepcopy(tasks)
   rms.sort(key=task_period)
   # go through each task in priority order and perform exact analysis
-  for i in range(len(rms)):
+  for i, rm in enumerate(rms):
     old_t = 0
     curr_tasks = rms[:i+1] # get list of tasks for exact analysis for current task
     for t in curr_tasks:
       old_t += t.wcet # find t_0
-    while old_t <= rms[i].period:
+    while old_t <= rm.period:
       new_t = 0
-      for j in range(len(curr_tasks)): 
-        new_t += curr_tasks[j].wcet * math.ceil(old_t/curr_tasks[j].period) # calc t_1, t_2, ..., t_n depending on cycle
-        
+      for curr_task in curr_tasks: 
+        new_t += curr_task.wcet * math.ceil(old_t/curr_task.period) # calc t_1, t_2, ..., t_n depending on cycle
       if new_t == old_t: # if new is the same as old, this task is good
         break
-      if new_t > rms[i].period: # if new is larger than period, this task set isn't possible... tell user this
+      if new_t > rm.period: # if new is larger than period, this task set isn't possible... tell user this
         print("********************************************************************************************************************")
-        print("On", rms[i].name, "exact analysis failed, so a RM schedule cannot be made for the task set")
+        print("On", rm.name, "exact analysis failed, so a RM schedule cannot be made for the task set")
         print()
-        print("Failing 't' value:", new_t, "\twhich was more than the maximum:", rms[i].period)
+        print("Failing 't' value:", new_t, "\twhich was more than the maximum:", rm.period)
         print("********************************************************************************************************************")
         return False
       old_t = new_t # if new_t < old_t, set old_t to new_t and repeat while loop
   return True
 
-def create_graph(data, tasks, labels, lcm, title):
+def create_graph(data, tasks, labels, lcm, title) -> None:
   """Creates a matplotlib graph for the given tasks
 
   Args:
@@ -198,7 +192,7 @@ def create_graph(data, tasks, labels, lcm, title):
     k += 1
   plt.show()
 
-def make_rms(rms_task_list, lcm):
+def make_rms(rms_task_list, lcm) -> None:
   """Creates the RM schedule for the task set. Only called if the task set has already been proven by either the utilization check
   or exact analysis to be schedulable by RM algorithm.
 
@@ -211,16 +205,13 @@ def make_rms(rms_task_list, lcm):
   task_insts = []
   labels = []
   data_list = []
+  labels = [task.name for task in rms_tasks]
   for task in rms_tasks:
-    labels.append(task.name)
     num_inst = lcm // task.period
     for j in range(0, num_inst):
       task_insts.append(TaskInstance(task, task.period, j * task.period, (j + 1) * task.period))
   for i in range(0, lcm, CLOCK_CYCLE):
-    possible_ti = []
-    for ti in task_insts:
-      if ti.start <= i:
-        possible_ti.append(ti)
+    possible_ti = [ti for ti in task_insts if ti.start <= i]
     possible_ti.sort(key=priority_cmp)
     if len(possible_ti) > 0:
       print(possible_ti)
@@ -234,7 +225,7 @@ def make_rms(rms_task_list, lcm):
   title = "RMS Schedule"
   create_graph(data_list, rms_tasks, labels, lcm, title)
 
-def make_edf(edf_task_list, lcm):
+def make_edf(edf_task_list, lcm) -> None:
   """Creates the EDF schedule for the task set. Only called if the task set has already been proven by the EDF scheduability check to be scheduable
   with the EDF algorithm
 
@@ -246,16 +237,13 @@ def make_edf(edf_task_list, lcm):
   task_insts = []
   labels = []
   data_list = []
+  labels = [task.name for task in edf_tasks]
   for task in edf_tasks:
-    labels.append(task.name)
     num_inst = lcm // task.period
     for j in range(0, num_inst):
       task_insts.append(TaskInstance(task, (j * task.period) + task.period, j * task.period, (j + 1) * task.period))
   for i in range(0, lcm, CLOCK_CYCLE):
-    possible_ti = []
-    for ti in task_insts:
-      if ti.start <= i:
-        possible_ti.append(ti)
+    possible_ti = [ti for ti in task_insts if ti.start <= i]
     possible_ti.sort(key=priority_cmp)
     if len(possible_ti) > 0:
       print(possible_ti)
@@ -273,7 +261,7 @@ def make_edf(edf_task_list, lcm):
   title = "EDF Schedule"
   create_graph(data_list, edf_tasks, labels, lcm, title)
 
-if __name__ == '__main__':
+def main():
   task_cnt = get_user_input("Enter the number of tasks to schedule: ")
   task_list = create_tasks(task_cnt)
   c_over_p = calc_cp(task_list)
@@ -296,3 +284,6 @@ if __name__ == '__main__':
     print()
     print("Neither an EDF nor RM schedule can be made for the given task set!")
     print("********************************************************************************************************************")
+
+if __name__ == '__main__':
+  main()
