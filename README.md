@@ -4,11 +4,11 @@ Creates RM and EDF schedules for a user given task set if possible.
 
 **Author** Willis Knox
 
-Used [this similar project](https://github.com/diegoperini/py-common-scheduling-algorithms) as a reference when initally starting to make sure I was keeping things 'pythonic'
+Used [this similar project](https://github.com/diegoperini/py-common-scheduling-algorithms) as a reference when initially starting to make sure I was keeping things 'pythonic'
 
 ## RMS Utilization Check and EDF Scheduability Check
 
-First runs the basic RMS scheduablility check (utilization check) to see if the task set passes a sufficient, but not necessary test for RM scheduling.
+First, this runs the basic RMS scheduablility check (utilization check) to see if the task set passes a sufficient, but not necessary test for RM scheduling.
 The basic RM utilization check is determined by the following equation:
 
 <img src="https://latex.codecogs.com/gif.latex?\sum\frac{c_i}{p_i}&space;\leq&space;n(2^{\frac{1}{n}}&space;-&space;1)" title="\sum\frac{c_i}{p_i} \leq n(2^{\frac{1}{n}} - 1)" />
